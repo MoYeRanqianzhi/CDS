@@ -7,7 +7,7 @@ import threading
 import time
 
 import qrcode
-from flask import Flask, request
+from flask import Flask, request, redirect
 
 path = '.\\cds\\'
 
@@ -180,6 +180,8 @@ class GUI:
                 break
             elif key == ord('p'):
                 startDirectory()
+            elif key == ord('w'):
+                os.popen(f'start {self.url}')
 
             self.sizeChanged()
 
@@ -264,6 +266,11 @@ port = get_port()
 gui = GUI(url=f'http://{host}:{port}/upload')
 
 app = Flask(__name__)
+
+
+@app.route('/', methods=['POST', 'GET'])
+def goto():
+    return redirect('/upload')
 
 
 @app.route('/upload/file', methods=['POST'])
